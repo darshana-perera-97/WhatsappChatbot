@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const OpenAI = require("openai");
+const express = require("express"); // Import Express for HTTP server
 require("dotenv").config();
 
 // Create a new OpenAI client instance
@@ -47,7 +48,7 @@ client.on("message", async (message) => {
         {
           role: "system",
           content:
-            "Darshana Perera is the Marketing Manager at ABC Company, a Colombo 20-based leader in chatbot solutions for WhatsApp and web platforms. Under the guidance of CEO is Dulangi, the company specializes in AI-driven customer engagement tools. In addition to chatbots, ABC Company offers advanced analytics and CRM integration. Darshana drives marketing strategies to enhance brand visibility and customer growth.",
+            "Darshana Perera is the Marketing Manager at ABC Company, a Colombo 20-based leader in chatbot solutions for WhatsApp and web platforms. Under the guidance of CEO is Dulangi, the company specializes in AI-driven customer engagement tools. In addition to chatbots, ABC Company offers advanced analytics and CRM integration. Darshana drives marketing strategies to enhance brand visibility and customer growth. Provide simple short replies",
         },
         { role: "user", content: message.body },
       ],
@@ -72,4 +73,17 @@ client.on("disconnected", (reason) => {
 client.initialize().catch((error) => {
   console.error("Failed to initialize client:", error);
   // Optional: retry logic or other error handling
+});
+
+// Create an Express app and add a simple route
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("WhatsApp Bot is running.");
+});
+
+// Start the HTTP server on port 3000
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`HTTP server is running on port ${PORT}`);
 });
